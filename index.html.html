@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>a proposal for Nana</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Quicksand:wght@500;600;700&family=Playfair+Display:ital,wght@1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#fff7ee; --pink:#ff6fa0; --pink-dark:#e14f82; --pink-light:#ffd9ea;
+  --ink:#3a2440; --shadow:#c94f7c;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --cream:#231523; --ink:#ffeaf4; } }
+:root[data-theme="dark"]{ --cream:#231523; --ink:#ffeaf4; }
+*{box-sizing:border-box;}
+html,body{height:100%;margin:0;}
+body{background:var(--cream);color:var(--ink);font-family:'Quicksand',system-ui,sans-serif;overflow:hidden;position:relative;}
+.bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;transition:opacity .9s ease;}
+.bg.fade{opacity:0;}
+.p{position:absolute;bottom:-40px;border-radius:50%;background:var(--pink-light);opacity:.55;animation:drift linear infinite;}
+.s{position:absolute;font-size:14px;color:var(--pink);opacity:0;animation:twinkle 3.4s ease-in-out infinite;}
+@keyframes drift{to{transform:translateY(-115vh) translateX(24px);}}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.5)}50%{opacity:.85;transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.p,.s{animation:none!important;opacity:.15}}
+@keyframes climaxIn{0%{transform:scale(.9) translateY(14px);}55%{transform:scale(1.04) translateY(-3px);}100%{transform:scale(1) translateY(0);}}
+#s6.active{animation:climaxIn .85s cubic-bezier(.22,1,.36,1) both;}
+@media (prefers-reduced-motion: reduce){#s6.active{animation:none;}}
+.stage{position:relative;z-index:1;height:100%;}
+.screen{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:32px 24px;gap:30px;opacity:0;transform:translateY(12px) scale(.98);transition:opacity .45s ease,transform .45s ease;}
+.screen.active{display:flex;opacity:1;transform:translateY(0) scale(1);}
+h1,.pxl{font-family:'Press Start 2P',monospace;}
+.tiny{font-size:13px;opacity:.75;letter-spacing:.5px;}
+.hey{font-family:'Playfair Display',serif;font-style:italic;font-size:34px;font-weight:600;opacity:.92;}
+.big{font-size:18px;line-height:2;max-width:300px;}
+.msg{font-size:22px;line-height:1.65;max-width:340px;font-weight:700;}
+.accent{font-family:'Playfair Display',serif;font-weight:700;font-style:normal;}
+.date{font-size:20px;color:var(--pink-dark);}
+button{font-family:'Press Start 2P',monospace;font-size:11px;background:var(--pink);color:#fff;border:4px solid var(--ink);box-shadow:5px 5px 0 var(--shadow);padding:16px 20px;border-radius:2px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .08s,box-shadow .08s;min-width:220px;}
+button:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--shadow);}
+button.sec{background:var(--cream);color:var(--ink);}
+button.hide{opacity:0;pointer-events:none;transform:translateY(8px);}
+.row{display:flex;flex-direction:column;gap:14px;align-items:stretch;width:100%;max-width:280px;}
+.row button{width:100%;}
+.wash{position:fixed;inset:0;background:var(--cream);opacity:0;z-index:20;pointer-events:none;transition:opacity 1s ease;}
+.wash.on{opacity:1;pointer-events:all;}
+.lines p{margin:2px 0;}
+</style>
+</head>
+<body>
+<div class="bg" id="bg"></div>
+<div class="stage">
+  <div class="screen active" id="s1"><p class="hey">Hey Nana...</p><h1 class="big">so I have one more proposal.</h1><button onclick="go('s2')">eh okay, I'm listening</button></div>
+  <div class="screen" id="s2"><p class="msg">This isn't unique to the past couple of days I've spent <span class="accent">with you</span>, but generally when we're together the noise around me seems to quiet down...</p><button onclick="go('s3')">okay... and...</button></div>
+  <div class="screen" id="s3"><h1 class="big">And basically I really enjoy your company and I think you're...</h1><button onclick="go('s4')">you think I'm...??</button></div>
+  <div class="screen" id="s4"><h1 class="big">Actually, let me get to the point...</h1><button id="btn4" class="hide" onclick="go('s5')">continue...</button></div>
+  <div class="screen" id="s5"><h1 class="big">so the proposal...</h1><button onclick="go('s6')">what is it?</button></div>
+  <div class="screen" id="s6"><h1 class="big" style="font-size:20px;">can I take you on an ice cream date?</h1><div class="row"><button onclick="yes()">yes 🍦</button><button class="sec" onclick="go('sB1')">wait, let me think about it</button></div></div>
+  <div class="screen" id="s8"><h1 class="big">wait... fr?!</h1><button onclick="go('s9')">lol, yes</button></div>
+  <div class="screen" id="s9"><div class="lines">
+    <p class="msg">Chuuu... its date then!</p>
+    <p class="pxl date">8 October</p><p class="pxl date">3:00 PM</p>
+    <p class="msg">I'll come pick you up.</p>
+    <p class="msg">Dress code:<br>comfortable shoes.</p>
+    <p class="msg">See you then, Nana.</p>
+  </div></div>
+  <div class="screen" id="sB1"><h1 class="big">It's calm...<br>Take your time.</h1><button onclick="go('sB2')">okay, I'll let you think</button></div>
+  <div class="screen" id="sB2"><h1 class="big">I'll be here. :)</h1></div>
+</div>
+<div class="wash" id="wash"></div>
+<script>
+const bg=document.getElementById('bg');
+for(let i=0;i<14;i++){const d=document.createElement('div');d.className='p';const size=6+Math.random()*14;d.style.width=d.style.height=size+'px';d.style.left=(Math.random()*100)+'%';d.style.animationDuration=(14+Math.random()*10)+'s';d.style.animationDelay=(-Math.random()*20)+'s';bg.appendChild(d);}
+['✦','✧'].forEach((ch,idx)=>{for(let i=0;i<3;i++){const s=document.createElement('div');s.className='s';s.textContent=ch;s.style.left=(10+Math.random()*80)+'%';s.style.top=(10+Math.random()*70)+'%';s.style.animationDelay=(-Math.random()*3)+'s';bg.appendChild(s);}});
+
+let current=document.getElementById('s1'), busy=false;
+function go(id){
+  if(busy) return; busy=true;
+  const next=document.getElementById(id);
+  current.classList.remove('active');
+  setTimeout(()=>{ next.classList.add('active'); current=next; busy=false; if(id==='s4') delayed4(); if(id==='s6') burst(); if(id==='sB1'||id==='s9') markFinal();},380);
+}
+function delayed4(){ setTimeout(()=>document.getElementById('btn4').classList.remove('hide'),1100); }
+function burst(){
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  for(let i=0;i<8;i++){
+    const s=document.createElement('div');
+    s.className='s';
+    s.textContent=Math.random()>.5?'✦':'✧';
+    s.style.left=(18+Math.random()*64)+'%';
+    s.style.top=(14+Math.random()*58)+'%';
+    s.style.fontSize=(12+Math.random()*10)+'px';
+    s.style.animation='twinkle 1.5s ease-out';
+    bg.appendChild(s);
+    setTimeout(()=>s.remove(),1600);
+  }
+}
+function yes(){
+  record('yes'); busy=true;
+  current.classList.remove('active');
+  document.getElementById('wash').classList.add('on');
+  bg.classList.add('fade');
+  setTimeout(()=>{
+    document.getElementById('wash').classList.remove('on');
+    bg.classList.remove('fade');
+    document.getElementById('s8').classList.add('active');
+    current=document.getElementById('s8'); busy=false;
+  },900);
+}
+function record(response){
+  const payload={response, ts:new Date().toISOString(), reachedFinal:false};
+  try{ localStorage.setItem('nana_response',JSON.stringify(payload)); }catch(e){}
+}
+function markFinal(){
+  try{
+    const cur=JSON.parse(localStorage.getItem('nana_response')||'{}');
+    cur.reachedFinal=true;
+    localStorage.setItem('nana_response',JSON.stringify(cur));
+  }catch(e){}
+}
+document.querySelectorAll('#sB1 button')[0]?.addEventListener('click',()=>record('thinking'));
+
+if(location.search.includes('admin')){
+  let data=null; try{ data=JSON.parse(localStorage.getItem('nana_response')); }catch(e){}
+  document.body.innerHTML =
+    '<div style="padding:40px 24px;font-family:monospace;background:var(--cream);min-height:100vh;color:var(--ink);">'+
+    '<h2>private admin view</h2>'+
+    '<p>response: '+(data&&data.response||'none yet')+'</p>'+
+    '<p>timestamp: '+(data&&data.ts||'-')+'</p>'+
+    '<p>reached final screen: '+(data&&data.reachedFinal?'yes':'no')+'</p>'+
+    '<p style="opacity:.6;font-size:12px;margin-top:20px;">note: this reads local storage on this device/browser only.</p>'+
+    '</div>';
+}
+</script>
+</body>
+</html>
